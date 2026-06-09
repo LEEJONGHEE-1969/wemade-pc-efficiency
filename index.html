@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>위메이드 데스크탑PC 호율관리인증내용</title>
+    <meta name="description" content="위메이드 보호작업장 데스크탑PC 세대별 대기전력 및 에너지 소비효율인증 상세 조회 프로그램">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars-bg"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo-area">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">WEMADE ENERGY</span>
+            </div>
+            <h1>위메이드 데스크탑PC 호율관리인증내용</h1>
+            <p class="subtitle">12세대 · 13세대 · 14세대 효율관리기자재 신고 데이터 실시간 검색 시스템</p>
+        </header>
+
+        <!-- Search Section -->
+        <section class="search-section card">
+            <div class="search-box-wrapper">
+                <div class="search-input-group">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="modelSearch" placeholder="모델명을 입력하세요 (예: ADF-M11M5VZ, RTM-F21M2VZ)" autocomplete="off">
+                    <button id="clearSearch" class="clear-btn" style="display: none;">&times;</button>
+                </div>
+                <!-- Autocomplete Dropdown -->
+                <div id="autocompleteList" class="autocomplete-dropdown" style="display: none;"></div>
+            </div>
+
+            <!-- Quick Filter Buttons -->
+            <div class="filter-group">
+                <span class="filter-label">세대별 빠른 검색:</span>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-gen="all">전체 (99)</button>
+                    <button class="filter-btn" data-gen="12세대">12세대 (34)</button>
+                    <button class="filter-btn" data-gen="13세대">13세대 (33)</button>
+                    <button class="filter-btn" data-gen="14세대">14세대 (32)</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Left Side: List View of Models -->
+            <section class="list-section card">
+                <div class="list-header">
+                    <h2>모델 목록 (<span id="modelCount">99</span>)</h2>
+                    <span class="sort-indicator">가나다순</span>
+                </div>
+                <div id="modelList" class="model-list-container">
+                    <!-- Dynamic model items go here -->
+                </div>
+            </section>
+
+            <!-- Right Side: Detailed View -->
+            <section id="detailsSection" class="details-section">
+                <!-- Fallback view when no model is selected -->
+                <div id="detailsPlaceholder" class="details-placeholder card">
+                    <div class="placeholder-icon">💻</div>
+                    <h3>분석할 모델을 선택해 주세요</h3>
+                    <p>왼쪽 목록에서 데스크탑 모델을 선택하거나 상단 검색창에서 모델명을 검색하시면 상세 효율 정보 및 비교 데이터를 확인할 수 있습니다.</p>
+                </div>
+
+                <!-- Actual Details Card (Hidden by default) -->
+                <div id="detailsCard" class="details-card-wrapper" style="display: none;">
+                    <!-- Model Basic Info Header -->
+                    <div class="model-info-header card">
+                        <div class="header-main">
+                            <div>
+                                <span class="badge-gen" id="detailGen">12세대</span>
+                                <h2 id="detailModelName">ADF-M11M5VZ</h2>
+                            </div>
+                            <div class="header-right">
+                                <span class="badge-status" id="detailGrade">최저소비효율기준 만족</span>
+                            </div>
+                        </div>
+                        <div class="header-sub">
+                            <span class="info-item"><strong>제조사:</strong> <span id="detailCompany">위메이드 보호작업장</span></span>
+                            <span class="info-separator">|</span>
+                            <span class="info-item"><strong>신고일자:</strong> <span id="detailDate">2025-01-02</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Comparison summary box -->
+                    <div class="comparison-summary card" id="compSummaryBox">
+                        <span class="comp-icon" id="compIcon">📈</span>
+                        <div class="comp-text">
+                            <h4 id="compTitle">에너지 효율 비교 분석</h4>
+                            <p id="compDescription">이 모델은 동세대 평균 데스크톱 PC 대비 더 효율적입니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Energy Efficiency Metrics Grid -->
+                    <div class="metrics-grid">
+                        <!-- TEC Main Card -->
+                        <div class="metric-card main-metric card">
+                            <div class="card-glow"></div>
+                            <div class="metric-header">
+                                <span class="metric-icon">🔌</span>
+                                <span class="metric-title">연간 소비전력량 (TEC)</span>
+                            </div>
+                            <div class="metric-value-container">
+                                <span class="metric-value" id="valTec">97.6</span>
+                                <span class="metric-unit">kWh</span>
+                            </div>
+                            <div class="metric-comparison">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-label">
+                                        <span>세대 평균 대비</span>
+                                        <span class="comp-percent-label" id="compTecPercent">-11.2%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar-fill" id="fillTec" style="width: 70%;"></div>
+                                        <div class="progress-bar-marker" id="markerTecAvg" style="left: 80%;"></div>
+                                    </div>
+                                    <div class="progress-bar-legend">
+                                        <span>더 효율적</span>
+                                        <span>평균 (110.0 kWh)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Annual Cost Card -->
+                        <div class="metric-card card">
+                            <div class="metric-header">
+                                <span class="metric-icon">🪙</span>
+                                <span class="metric-title">연간 에너지 비용</span>
+                            </div>
+                            <div class="metric-value-container">
+                                <span class="metric-value" id="valCost">16,000</span>
+                                <span class="metric-unit">원</span>
+                            </div>
+                            <p class="metric-footer">일반 가정용 요금 기준 추정치</p>
+                        </div>
+
+                        <!-- Carbon Emission Card -->
+                        <div class="metric-card card">
+                            <div class="metric-header">
+                                <span class="metric-icon">🌱</span>
+                                <span class="metric-title">연간 탄소 배출량</span>
+                            </div>
+                            <div class="metric-value-container">
+                                <span class="metric-value" id="valCo2">41.5</span>
+                                <span class="metric-unit">kg CO₂</span>
+                            </div>
+                            <p class="metric-footer">나무 약 6.3그루 식재 효과</p>
+                        </div>
+                    </div>
+
+                    <!-- Standby Power Gauges -->
+                    <div class="standby-section card">
+                        <h3>대기전력 측정 상세 (Standby Power)</h3>
+                        <div class="gauges-container">
+                            <!-- Long Idle Gauge -->
+                            <div class="gauge-item">
+                                <div class="gauge-circle-wrapper">
+                                    <svg viewBox="0 0 100 100" class="gauge-svg">
+                                        <circle cx="50" cy="50" r="40" class="gauge-bg-circle"></circle>
+                                        <circle cx="50" cy="50" r="40" class="gauge-fill-circle" id="circleIdle" stroke-dasharray="251.2" stroke-dashoffset="180"></circle>
+                                    </svg>
+                                    <div class="gauge-center">
+                                        <span class="gauge-num" id="valIdle">27.2</span>
+                                        <span class="gauge-unit">W</span>
+                                    </div>
+                                </div>
+                                <span class="gauge-label">롱아이들 소비전력</span>
+                            </div>
+
+                            <!-- Sleep Gauge -->
+                            <div class="gauge-item">
+                                <div class="gauge-circle-wrapper">
+                                    <svg viewBox="0 0 100 100" class="gauge-svg">
+                                        <circle cx="50" cy="50" r="40" class="gauge-bg-circle"></circle>
+                                        <circle cx="50" cy="50" r="40" class="gauge-fill-circle" id="circleSleep" stroke-dasharray="251.2" stroke-dashoffset="240" style="stroke: var(--color-success);"></circle>
+                                    </svg>
+                                    <div class="gauge-center">
+                                        <span class="gauge-num" id="valSleep">0.9</span>
+                                        <span class="gauge-unit">W</span>
+                                    </div>
+                                </div>
+                                <span class="gauge-label">슬립모드 소비전력</span>
+                                <span class="gauge-sub-label" id="valSleepTime">이행: 15분</span>
+                            </div>
+
+                            <!-- Off Gauge -->
+                            <div class="gauge-item">
+                                <div class="gauge-circle-wrapper">
+                                    <svg viewBox="0 0 100 100" class="gauge-svg">
+                                        <circle cx="50" cy="50" r="40" class="gauge-bg-circle"></circle>
+                                        <circle cx="50" cy="50" r="40" class="gauge-fill-circle" id="circleOff" stroke-dasharray="251.2" stroke-dashoffset="245" style="stroke: var(--color-info);"></circle>
+                                    </svg>
+                                    <div class="gauge-center">
+                                        <span class="gauge-num" id="valOff">0.4</span>
+                                        <span class="gauge-unit">W</span>
+                                    </div>
+                                </div>
+                                <span class="gauge-label">꺼짐(오프) 소비전력</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hardware & Certificate Info Table -->
+                    <div class="certificate-details card">
+                        <h3>인증 및 신고 상세 정보</h3>
+                        <table class="detail-table">
+                            <tbody>
+                                <tr>
+                                    <th>접수 번호</th>
+                                    <td id="tableReceiptNum">289225115</td>
+                                    <th>대표 사업자 번호</th>
+                                    <td id="tableBizNum">525-82-00408</td>
+                                </tr>
+                                <tr>
+                                    <th>기자재 분류</th>
+                                    <td id="tableClass">Desktop</td>
+                                    <th>컴퓨터 유형</th>
+                                    <td id="tableType">D (고성능)</td>
+                                </tr>
+                                <tr>
+                                    <th>효율 기준 만족 여부</th>
+                                    <td id="tableGrade">최저소비효율기준 만족</td>
+                                    <th>신고 기관</th>
+                                    <td>한국에너지공단</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 위메이드 보호작업장 데스크탑PC 효율관리 정보 검색 도구</p>
+            <p class="footer-links">Designed for Web Browser / Pure Client-Side Single Page Application</p>
+        </footer>
+    </div>
+
+    <!-- Data & Application logic -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
